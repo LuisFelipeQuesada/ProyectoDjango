@@ -1,0 +1,29 @@
+{% load i18n %}
+
+{% get_available_languages as languages %}
+
+<form action="/i18n/setlang/" method="post">
+	{% csrf_token %}
+	<input name="next" type="hidden" value="{{ redirect_to }}" />
+	<select name="language">
+		{% get_language_info_list for LANGUAGES as languages %}
+		{% for language in languages %}
+			<option value="{{ language.code }}">{{ language.name_local }} ({{ language.code }})</option>
+		{% endfor %}
+	</select>
+	<input type="submit" value="Go" />
+</form>
+
+{% if latest_poll_list %}
+	<ul>
+		{% for poll in latest_poll_list %}
+			<li><a href="/polls/{{poll.id}}/">{{poll.question}}</a></li>
+		{% endfor %}
+	</ul>
+{% else %}
+	{% trans "No polls are available" %}
+{% endif %}
+
+
+
+
